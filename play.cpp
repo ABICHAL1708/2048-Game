@@ -2,7 +2,11 @@
 #include<iostream>
 using namespace std;
 
-int maxe=0;
+int maxe=0;//for keeping the value of the maximum
+//number which has been achieved in the board
+set<int> free_spaces;//an integer set for saving the numbers
+//which are the elements of the board which still hav
+//0 or are still free.
 
 /*for checking the condition that the game has not 
 ended yet. If ended return false else true*/
@@ -51,14 +55,19 @@ void right(int board[][4]){
 			while(t<pos){
 				if(board[i][t+1]==0){
 					board[i][t+1]=board[i][t];
-					if(board[i][t]!=0)
+					if(board[i][t]!=0){
+						free_spaces.insert(4*i+t);
+						auto rem=free_spaces.find(4*(i)+t+1);
+						free_spaces.erase(rem);
 						mov++;
+					}
 					board[i][t]=0;
 					t++;
 				}
 				else{
 					if(board[i][t+1]==board[i][t]){
 						board[i][t]=0;
+						free_spaces.insert(4*i+t);
 						board[i][t+1]*=2;
 						if(board[i][t+1]>check){
 							maxe=board[i][t+1];
@@ -73,12 +82,13 @@ void right(int board[][4]){
 	}
 	if(mov){
 		srand(time(NULL));
-		int insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		while(board[x][y]!=0){
-			srand(time(NULL));
-			insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		}
+		int insertr=rand()%(free_spaces.size()-0)+0;
+		auto itr = free_spaces.begin();
+		for(i=0; i<insertr; i++)
+			itr++;
+		int x=*itr/4, y=*itr%4;
 		board[x][y]=2;
+		free_spaces.erase(itr);
 	}
 }
 
@@ -91,14 +101,19 @@ void down(int board[][4]){
 			while(t<pos){
 				if(board[t+1][i]==0){
 					board[t+1][i]=board[t][i];
-					if(board[t][i]!=0)
+					if(board[t][i]!=0){
+						free_spaces.insert(4*t+i);
+						auto rem=free_spaces.find(4*(t+1)+i);
+						free_spaces.erase(rem);
 						mov++;
+					}
 					board[t][i]=0;
 					t++;
 				}
 				else{
 					if(board[t+1][i]==board[t][i]){
 						board[t][i]=0;
+						free_spaces.insert(4*t+i);
 						board[t+1][i]*=2;
 						if(board[t+1][i]>check)
 							maxe=board[t+1][i];
@@ -112,12 +127,13 @@ void down(int board[][4]){
 	}
 	if(mov){
 		srand(time(NULL));
-		int insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		while(board[x][y]!=0){
-			srand(time(NULL));
-			insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		}
+		int insertr=rand()%(free_spaces.size()-0)+0;
+		auto itr = free_spaces.begin();
+		for(i=0; i<insertr; i++)
+			itr++;
+		int x=*itr/4, y=*itr%4;
 		board[x][y]=2;
+		free_spaces.erase(itr);
 	}
 }
 
@@ -130,14 +146,19 @@ void left(int board[][4]){
 			while(t>pos){
 				if(board[i][t-1]==0){
 					board[i][t-1]=board[i][t];
-					if(board[i][t]!=0)
+					if(board[i][t]!=0){
+						free_spaces.insert(4*i+t);
+						auto rem=free_spaces.find(4*i+t-1);
+						free_spaces.erase(rem);
 						mov++;
+					}
 					board[i][t]=0;
 					t--;
 				}
 				else{
 					if(board[i][t-1]==board[i][t]){
 						board[i][t]=0;
+						free_spaces.insert(4*i+t);
 						board[i][t-1]*=2;
 						if(board[i][t-1]>check)
 							maxe=board[i][t-1];
@@ -151,12 +172,13 @@ void left(int board[][4]){
 	}
 	if(mov){
 		srand(time(NULL));
-		int insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		while(board[x][y]!=0){
-			srand(time(NULL));
-			insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		}
+		int insertr=rand()%(free_spaces.size()-0)+0;
+		auto itr = free_spaces.begin();
+		for(i=0; i<insertr; i++)
+			itr++;
+		int x=*itr/4, y=*itr%4;
 		board[x][y]=2;
+		free_spaces.erase(itr);
 	}
 }
 
@@ -169,14 +191,19 @@ void up(int board[][4]){
 			while(t>pos){
 				if(board[t-1][i]==0){
 					board[t-1][i]=board[t][i];
-					if(board[t][i]!=0)
+					if(board[t][i]!=0){
+						free_spaces.insert(4*t+i);
+						auto rem=free_spaces.find(4*(t-1)+i);
+						free_spaces.erase(rem);
 						mov++;
+					}
 					board[t][i]=0;
 					t--;
 				}
 				else{
 					if(board[t-1][i]==board[t][i]){
 						board[t][i]=0;
+						free_spaces.insert(4*t+i);
 						board[t-1][i]*=2;
 						if(board[t-1][i]>check)
 							maxe=board[t-1][i];
@@ -190,12 +217,13 @@ void up(int board[][4]){
 	}
 	if(mov){
 		srand(time(NULL));
-		int insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		while(board[x][y]!=0){
-			srand(time(NULL));
-			insertr=rand()%(15-0+1)+0, x=insertr/4, y=insertr%4;
-		}
+		int insertr=rand()%(free_spaces.size()-0)+0;
+		auto itr = free_spaces.begin();
+		for(i=0; i<insertr; i++)
+			itr++;
+		int x=*itr/4, y=*itr%4;
 		board[x][y]=2;
+		free_spaces.erase(itr);
 	}
 }
 
@@ -209,14 +237,27 @@ int main(){
 
 	//intializing board with all zeros
 	for(i=0; i<4; i++){
-		for(j=0; j<4; j++)
+		for(j=0; j<4; j++){
 			board[i][j]=0;
+			free_spaces.insert(i*4+j);
+		}
 	}
 	//adding a random 2 somewhere
 	srand(time(NULL));//seedng the time for rand
 	inserti=rand()%(3-0 + 1) +  0;
 	insertj=rand()%(3-0 + 1) +  0;
 	board[inserti][insertj]=2;
+
+	//removing the value from the set
+	auto pos=free_spaces.find(4*inserti+insertj);
+	free_spaces.erase(pos);
+
+	auto itr=free_spaces.begin();
+	for(i=0; i<free_spaces.size(); i++){
+		cout<<*itr<<" ";
+		itr++;
+	}
+
 	maxe=2;
 	display(board);
 	while(check(board)){
