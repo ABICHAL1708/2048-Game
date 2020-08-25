@@ -12,9 +12,17 @@ set<int> free_spaces;//an integer set for saving the numbers
 ended yet. If ended return false else true*/
 bool check(int board[][4]){
 	int i, j;
+	if(!free_spaces.empty())
+		return true;
 	for(i=0; i<4; i++){
+		for(j=1; j<4; j++){
+			if(board[i][j]==board[i][j-1])
+				return true;
+		}
+	}
+	for(i=1; i<4; i++){
 		for(j=0; j<4; j++){
-			if(board[i][j]==0)
+			if(board[i][j]==board[i-1][j])
 				return true;
 		}
 	}
