@@ -252,11 +252,12 @@ int main(){
 	auto pos=free_spaces.find(4*inserti+insertj);
 	free_spaces.erase(pos);
 
+	/* //check if contents of set is correct
 	auto itr=free_spaces.begin();
 	for(i=0; i<free_spaces.size(); i++){
 		cout<<*itr<<" ";
 		itr++;
-	}
+	}*/
 
 	maxe=2;
 	display(board);
